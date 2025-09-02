@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login</title>
+  <style>
+    /* กำหนดพื้นหลังและการจัดตำแหน่งของหน้าจอ */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #333;
+    }
+
+    /* กล่องล็อกอิน */
+    .login-container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      width: 350px;
+      text-align: center;
+    }
+
+    /* โลโก้โรงเรียน */
+    .logo {
+      width: 120px;  /* ขนาดโลโก้ */
+      margin-bottom: 20px;  /* ระยะห่างจากโลโก้ไปยังฟอร์ม */
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #800000; /* สีแดงเลือดหมู */
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    /* ฟอร์ม input */
+    input {
+      padding: 12px;
+      margin: 15px 0;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: #800000; /* เปลี่ยนสีขอบเมื่อมีการโฟกัส */
+      outline: none;
+    }
+
+    /* ปุ่มเข้าสู่ระบบ */
+    button {
+      padding: 12px 20px;
+      background: #800000; /* สีมารูน */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 80%;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background: darkred; /* สีเมื่อ hover ปุ่ม */
+    }
+
+    /* กำหนดระยะห่างและจัดกล่องล็อกอิน */
+    .login-box {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <!-- โลโก้โรงเรียน -->
+    <img src="school-logo.png" alt="School Logo" class="logo">
+    <div class="login-box">
+      <h2>เข้าสู่ระบบนักเรียน</h2>
+
+      <input type="text" id="studentId" placeholder="รหัสนักเรียน"><br>
+      <button onclick="login()">เข้าสู่ระบบ</button>
+    </div>
+  </div>
+
+  <script>
+    async function login() {
+      const studentId = document.getElementById("studentId").value.trim();
+      if (!studentId) {
+        alert("กรุณากรอกรหัสนักเรียน");
+        return;
+      }
+
+      // ใส่ URL ของ Google Apps Script Web App ตรงนี้
+      const url = "https://script.google.com/macros/s/AKfycbw0q-4j7gU6CHUKcIc2B5hlOISPd3jXDuUvE_0gEjIsnPMCHBqWAAL6IrLmL7gjZc33ig/exec?action=login&studentId=" + encodeURIComponent(studentId);
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.success) {
+          // เก็บข้อมูลไว้ใน localStorage
+          localStorage.setItem("studentData", JSON.stringify(data.data));
+          // ไปหน้า dashboard
+          window.location.href = "dashboard.html";
+        } else {
+          alert(data.message);
+        }
+      } catch (err) {
+        alert("เกิดข้อผิดพลาด: " + err);
+      }
+    }
+  </script>
+</body>
+</html>

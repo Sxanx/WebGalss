@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <style>
+    /* ใช้สำหรับให้หน้าจอพอดีกับขนาดหน้าจอ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      overflow: hidden; /* ป้องกันแถบเลื่อน */
+    }
+
+    /* ส่วน header ที่มีโลโก้และชื่อ */
+    .header {
+      text-align: center;
+      background-color: #800000;
+      padding: 20px;
+      color: white;
+      width: 100%;
+      border-bottom: 4px solid #333;
+      position: relative;
+    }
+
+    .logo {
+      width: 120px;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 36px;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    /* กล่องข้อมูลนักเรียน */
+    .card {
+      background-color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);  /* เพิ่มเงาให้เด่น */
+      width: 80%;
+      max-width: 500px;  /* จำกัดขนาดสูงสุดของกล่อง */
+      text-align: center;
+      margin-top: 20px;
+      border: 2px solid #800000;  /* ขอบกล่องสีแดงเลือดหมู */
+      overflow: hidden; /* ป้องกันไม่ให้เนื้อหายืดเยื้อ */
+    }
+
+    .card h2 {
+      font-size: 24px;
+      color: #800000; /* สีแดงเลือดหมู */
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .card p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .card b {
+      font-weight: 600;
+    }
+
+    /* ปุ่ม logout */
+    .logout {
+      margin-top: 20px;
+      padding: 10px 30px;
+      background-color: #800000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout:hover {
+      background-color: darkred;
+    }
+
+    /* ปรับการจัดตำแหน่งและขนาด */
+    .card span {
+      font-size: 18px;
+      color: #333;
+    }
+
+    /* ใช้ Flexbox เพื่อจัดกล่องข้อมูลนักเรียนให้อยู่กลางหน้าจอ */
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100%;
+      padding-top: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <!-- โลโก้โรงเรียน -->
+      <img src="school-logo.png" alt="School Logo" class="logo">
+      <h1>Student Dashboard</h1>
+    </div>
+
+    <!-- กล่องข้อมูลนักเรียน -->
+    <div class="card">
+      <h2 id="studentName"></h2>
+      <p><b>รหัสนักเรียน:</b> <span id="studentId"></span></p>
+      <p><b>ระดับชั้น:</b> <span id="studentLevel"></span></p>
+      <p><b>คะแนนสม:</b> <span id="studentPoint"></span></p>
+      <button class="logout" onclick="logout()">ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      const studentData = localStorage.getItem("studentData");
+      if (!studentData) {
+        window.location.href = "index.html"; // ถ้าไม่มีข้อมูลให้กลับไปหน้า login
+        return;
+      }
+      const data = JSON.parse(studentData);
+
+      document.getElementById("studentName").textContent = data.name;
+      document.getElementById("studentId").textContent = data.studentId;
+      document.getElementById("studentLevel").textContent = data.level;
+      document.getElementById("studentPoint").textContent = data.point;
+    }
+
+    function logout() {
+      localStorage.removeItem("studentData");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
